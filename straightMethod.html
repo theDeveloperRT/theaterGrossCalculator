@@ -1,0 +1,1652 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater Gross Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+        :root {
+            --primaryColor: #151A51;
+            /* --primaryColor: #010127; */
+            --secondaryColor: #ffffff;
+            --listColor: #c7c7ff;
+        }
+
+        * {
+            font-family: 'Poppins';
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            /* background-color: rgb(198, 205, 244); */
+        }
+
+        .screen1 {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition-duration: 0.5s;
+
+            /* display: none; */
+        }
+
+        .inputContainer {
+            width: 100%;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--primaryColor);
+            color: white;
+            height: 130px;
+            justify-content: center;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+
+        #theatersListUL {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: fit-content;
+            max-height: 200px;
+            width: 80%;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            margin-top: -20px;
+            background-color: var(--listColor);
+            border-radius: 15px;
+            display: none;
+        }
+
+        #theatersListUL li {
+            background-color: var(--listColor);
+            padding: 10px 0px;
+            width: 100%;
+            text-align: center;
+            border-bottom: solid 2px black;
+            margin-left: -40px;
+            font-weight: bold;
+            text-transform: capitalize;
+            cursor: pointer;
+        }
+
+        #location {
+            width: 90%;
+            margin-top: 5px;
+            font-weight: bold;
+            text-align: right;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .locationChanger {
+            position: fixed;
+            width: 95%;
+            top: 50px;
+            background-color: var(--listColor);
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .locationChanger input {
+            width: 90%;
+            border-radius: 10px;
+            padding: 2px 5px;
+            text-align: left;
+            border-style: none;
+            margin-top: 10px;
+        }
+
+        #locationsUL {
+            list-style-type: none;
+            width: 100%;
+            margin-top: 0px;
+            min-height: fit-content;
+            max-height: 200px;
+            overflow: scroll;
+        }
+
+        #locationsUL li {
+            background-color: var(--listColor);
+            padding: 10px 0px;
+            width: 100%;
+            text-align: center;
+            border-bottom: solid 2px black;
+            margin-left: -20px;
+            font-weight: bold;
+            text-transform: capitalize;
+            cursor: pointer;
+        }
+
+        #theaterNameLabel {
+            margin-top: -10px;
+        }
+
+        .sectionsContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        #calc_btn {
+            display: none;
+        }
+
+        .longInput {
+            width: 90%;
+            border-radius: 10px;
+            padding: 2px 5px;
+            text-align: left;
+            border-style: none;
+        }
+
+        .MultiInputs {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .MultiInputs button {
+            border-radius: 0px;
+        }
+
+        input {
+            height: 35px;
+            width: 28.5%;
+            text-align: center;
+            margin: 5px 0px;
+
+        }
+
+        label {
+            width: 92%;
+            font-weight: bold;
+        }
+
+        button {
+            height: 40px;
+            width: 30%;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: var(--primaryColor);
+        }
+
+        .screen2 {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition-duration: 0.5s;
+            display: none;
+        }
+
+        p {
+            font-size: 18px;
+            width: 90%;
+            margin: 10px;
+            margin-top: -10px;
+            /* background-color: aqua; */
+        }
+
+        .bold {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+
+        .totalGross {
+            text-align: center;
+            color: white;
+            background-color: var(--primaryColor);
+            padding: 10px;
+            padding-bottom: 15px;
+            border-radius: 15px;
+            border: none;
+            width: 90%;
+            margin-top: 0px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        #opTheaterName {
+            width: 96%;
+            background-color: var(--primaryColor);
+            color: white;
+            height: 100px;
+            justify-content: center;
+            /* border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px; */
+            margin-top: 0px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            font-size: 20px;
+            padding: 0px 2%;
+        }
+
+        .opSectionContainer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: -15px;
+        }
+
+        .alertBoxContainer {
+            width: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            height: 100%;
+            justify-content: center;
+            z-index: 1;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+        }
+
+        .alertBox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            border-radius: 15px;
+            height: fit-content;
+            padding: 10px;
+            background-color: #F8F8FF;
+
+        }
+
+        .alertBox h2 {
+            margin: 0px;
+            width: 100%;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bolder;
+        }
+
+        .alertBox p {
+            margin-top: 0px;
+            font-size: 14px;
+            text-align: center;
+            color: #4F4F4F;
+        }
+
+        .alertButtons {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 0px;
+        }
+
+        .alertButtons button {
+            width: 50%;
+        }
+
+        #green-btn {
+            background-color: green;
+        }
+
+        #red-btn {
+            background-color: rgb(203, 23, 23);
+        }
+
+        .screen3 {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* background-color: #4F4F4F; */
+            height: 85%;
+            overflow: scroll;
+            display: none;
+        }
+
+        .screen3 h2 {
+            background-color: var(--primaryColor);
+            width: 96%;
+            padding: 15px 2%;
+            margin: 0px;
+            color: white;
+            text-align: center;
+        }
+
+        .Screen3Content {
+            width: 100%;
+        }
+
+        .listItemOuter3 {
+            width: 100%;
+            margin: 0px;
+            /* background-color: #4F4F4F; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .itemContainer3 {
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 3%;
+            background-color: var(--listColor);
+            border-radius: 10px;
+            margin-top: -10px;
+            height: 60px;
+            overflow: hidden;
+            transition-duration: 0.5s;
+        }
+
+        .cancelIconContainer {
+            width: 98%;
+            margin: 0px;
+            justify-content: end;
+            display: flex;
+            position: relative;
+        }
+
+        .cancleIcon {
+            background-color: white;
+            text-align: center;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+        }
+
+        .listHeadPart {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0px;
+        }
+
+
+        .theaterNameHeading3 {
+            /* background-color: #4F4F4F; */
+            width: 70%;
+            text-align: left;
+            height: 25px;
+            overflow: hidden;
+            height: 20px;
+            font-size: 18px;
+            margin: 0px;
+        }
+
+        .theaterGross3 {
+            /* background-color: #F8F8FF; */
+            width: 30%;
+            text-align: right;
+            height: 25px;
+            overflow: hidden;
+            margin: 0px;
+            font-size: 18px;
+        }
+
+        .middlePartArrow {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 0px;
+            margin-top: 5px;
+            justify-content: space-between;
+            /* background-color: #4F4F4F; */
+        }
+
+        .soldTickets3 {
+            font-size: 14px;
+            text-align: left;
+            margin: 0px;
+            margin-top: 5px;
+        }
+
+        .downArrow {
+            margin-top: 5px;
+            text-align: right;
+            margin-right: 5px;
+            transition-duration: 0.5s;
+            width: 18px;
+            height: 18px;
+        }
+
+        .detailedInfo {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+            border-top: solid 2px black;
+            margin-top: 5px;
+        }
+
+        .leftPart {
+            width: 55%;
+            text-align: left;
+        }
+
+        .middlePart {
+            width: 40%;
+        }
+
+        .rightPart {
+            width: 25%;
+            text-align: right;
+        }
+
+        .leftPart p,
+        .middlePart p,
+        .rightPart p {
+            width: 100%;
+            margin: 0;
+            margin-top: 5px;
+            font-size: 16px;
+            /* color: red;
+            background-color: #151A51; */
+            height: 23px;
+        }
+
+        .p1 {
+            width: 100%;
+            font-size: 16px;
+            margin: 0px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .totalReport {
+            width: 95%;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            background-color: var(--primaryColor);
+            color: white;
+            margin-top: 5px;
+            display: none;
+
+        }
+
+        .totalReport div h3 {
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        .totalReport div p {
+            width: 100%;
+            font-size: 14px;
+            text-align: center;
+            color: gray;
+            margin-top: -20px;
+            /* background-color: #4F4F4F; */
+            margin-left: 0px;
+        }
+
+        .controlButtons {
+            width: 95%;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .controlButtons button {
+            width: 45%;
+        }
+
+        .neg-btn {
+            background-color: white;
+            color: red;
+            border: solid 2px red;
+        }
+
+        .postive-btn {
+            background-color: white;
+            color: var(--primaryColor);
+            border: solid 2px var(--primaryColor);
+            display: none;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            background-color: var(--primaryColor);
+            width: 100%;
+            text-align: center;
+            color: white;
+            /* display: none; */
+        }
+
+        .screen1Buttons {
+            width: 95%;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            margin-bottom: 10px;
+        }
+
+        .screen1Buttons button {
+            width: 40%;
+            margin-top: 5px;
+        }
+
+        .screen2Buttons {
+            margin-top: -10px;
+        }
+
+        .screen2Buttons button {
+            width: 40%;
+        }
+
+        #backBtnS2 {
+            position: absolute;
+            background-color: red;
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            left: 10px;
+            top: 10px;
+        }
+
+        .test {
+            height: 100px;
+            width: 100px;
+            background-color: red;
+            position: absolute;
+            top: 100px;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/3c405e6735.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="screen1">
+
+        <div class="inputContainer">
+            <p id="location" onclick="openLocationChanger()"><i class="fa-solid fa-location-dot"></i> <span
+                    id="locationName">HYDERABAD</span></p>
+            <div class="locationChanger">
+                <input type="text" id="locationInput" placeholder="Search Your City..." oninput="changeLocation()">
+                <ul id="locationsUL">
+                    <li>Hyderabad</li>
+                    <li>Vishakapatnam</li>
+                    <li>Vijayawada</li>
+                    <li>Bangalore</li>
+                    <li>Chennai</li>
+                </ul>
+            </div>
+            <label for="theaterName" id="theaterNameLabel">Theater Name</label>
+            <input type="text" placeholder="Search Theater" class="longInput" oninput="theatersSearchFilter()"
+                id="theaterName">
+        </div>
+
+        <ul id="theatersListUL">
+            <li>Aradhana 70MM</li>
+            <li>Sri Sai Ram 70MM</li>
+            <li>Vyjayanthi 70MM</li>
+            <li>Prashanth 70MM</li>
+        </ul>
+
+        <div class="sectionsContainer">
+            <label id="sectionName1" for="priceInputS1">Upper Balcony</label>
+            <div class="MultiInputs" id="section1">
+                <input type="number" placeholder="Price" id="priceInputS1">
+                <input type="number" placeholder="Tickets Sold" id="ticketSoldInput1">
+                <button id="full-btnS1" onclick="setFullS1()">Full</button>
+            </div>
+
+            <label id="sectionName2" for="priceInputS2">Lower Balcony</label>
+            <div class="MultiInputs" id="section2">
+                <input type="number" placeholder="Price" id="priceInputS2">
+                <input type="number" placeholder="Tickets Sold" id="ticketSoldInput2">
+                <button id="full-btnS2" onclick="setFullS2()">Full</button>
+            </div>
+
+            <label id="sectionName3" for="priceInputS3">First Class</label>
+            <div class="MultiInputs" id="section3">
+                <input type="number" placeholder="Price" id="priceInputS3">
+                <input type="number" placeholder="Tickets Sold" id="ticketSoldInput3">
+                <button id="full-btnS3" onclick="setFullS3()">Full</button>
+            </div>
+
+            <label id="sectionName4" for="priceInputS4">Second Class</label>
+            <div class="MultiInputs" id="section4">
+                <input type="number" placeholder="Price" id="priceInputS4">
+                <input type="number" placeholder="Tickets Sold" id="ticketSoldInput4">
+                <button id="full-btnS4" onclick="setFullS4()">Full</button>
+            </div>
+        </div>
+
+        <div class="screen1Buttons">
+            <button class="postive-btn" id="vr_Btn_S1" onclick="viewReport(1)">View Report</button>
+            <button onclick="calculateGross()" class="resultBtns" id="calc_btn">Calculate</button>
+        </div>
+
+    </div>
+
+    <div class="screen2">
+        <h2 id="opTheaterName">Sri Sai Ram 70MM 4K Dolby Atmos - Malkajgiri</h2>
+        <div class="opSectionContainer">
+            <p class="bold" id="opSectionName1">Upper Balcony</p>
+            <p id="sectionCalculation1">150 x 100 = 15000/-</p>
+            <p class="bold" id="opSectionName2">Lower Balcony</p>
+            <p id="sectionCalculation2">150 x 100 = 15000/-</p>
+            <p class="bold" id="opSectionName3">First Class</p>
+            <p id="sectionCalculation3">100 x 100 = 10000/-</p>
+            <p class="bold" id="opSectionName4">Second Class</p>
+            <p id="sectionCalculation4">50 x 100 = 5000/-</p>
+        </div>
+        <p class="bold" id="totalTicketsSold">Total Tickets Sold : 400</p>
+        <h2 class="totalGross" id="totalGross">Total Gross : 30,000/-</h2>
+        <div class="screen1Buttons screen2Buttons">
+            <button onclick="addInfoToList()">Add to Report</button>
+            <button onclick="viewReport(2)">View Report</button>
+        </div>
+        <button onclick="goBack()" class="resultBtns">Back</button>
+
+    </div>
+
+    <div class="alertBoxContainer">
+        <div class="alertBox">
+            <h2 id="alertHead">Sorry !</h2>
+            <p id="alertMsg">We are working on your location, Kindly update your app and try again.</p>
+            <div class="alertButtons">
+                <button id="green-btn" onclick="gotoUpdatePage()">Check For Update</button>
+                <button id="red-btn" onclick="closeAlertBox()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen3">
+        <h2>Total Gross Report</h2>
+        <div class="Screen3Content">
+            <!-- <div class="listItemOuter3">
+                <div class="cancelIconContainer">
+                    <svg fill="#ff0000" height="18px" width="18px" version="1.1" class="cancleIcon"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 300.003 300.003" xml:space="preserve"
+                        onclick="removeTheaterFromList(this.parentNode.parentNode)">
+                        <g>
+                            <g>
+                                <path d="M150,0C67.159,0,0.001,67.159,0.001,150c0,82.838,67.157,150.003,149.997,150.003S300.002,232.838,300.002,150
+            C300.002,67.159,232.839,0,150,0z M206.584,207.171c-5.989,5.984-15.691,5.984-21.675,0l-34.132-34.132l-35.686,35.686
+            c-5.986,5.984-15.689,5.984-21.672,0c-5.989-5.991-5.989-15.691,0-21.68l35.683-35.683L95.878,118.14
+            c-5.984-5.991-5.984-15.691,0-21.678c5.986-5.986,15.691-5.986,21.678,0l33.222,33.222l31.671-31.673
+            c5.986-5.984,15.694-5.986,21.675,0c5.989,5.991,5.989,15.697,0,21.678l-31.668,31.671l34.13,34.132
+            C212.57,191.475,212.573,201.183,206.584,207.171z" />
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+                <div class="itemContainer3">
+
+                    <div class="listHeadPart">
+                        <h3 class="theaterNameHeading3">Aradhana</h3>
+                        <h3 class="theaterGross3">15002/-</h3>
+                    </div>
+
+                    <div class="middlePartArrow">
+                        <p class="soldTickets3">345 Tickets Sold</p>
+                        <svg fill="#000000" height="18px" width="18px" version="1.1" class="downArrow"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            viewBox="0 0 512 512" xml:space="preserve" onclick="expandList()">
+                            <g>
+                                <g>
+                                    <g>
+                                        <path d="M256,0C114.618,0,0,114.618,0,256s114.618,256,256,256s256-114.618,256-256S397.382,0,256,0z M256,469.333
+                               c-117.818,0-213.333-95.515-213.333-213.333S138.182,42.667,256,42.667S469.333,138.182,469.333,256S373.818,469.333,256,469.333
+                               z" />
+                                        <path d="M347.582,198.248L256,289.83l-91.582-91.582c-8.331-8.331-21.839-8.331-30.17,0c-8.331,8.331-8.331,21.839,0,30.17
+                               l106.667,106.667c8.331,8.331,21.839,8.331,30.17,0l106.667-106.667c8.331-8.331,8.331-21.839,0-30.17
+                               C369.42,189.917,355.913,189.917,347.582,198.248z" />
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <div class="detailedInfo">
+                        <div class="leftPart">
+                            <p>Upper Balcony</p>
+                            <p>Lower Balcony</p>
+                            <p>First Class</p>
+                            <p>Second Class</p>
+                        </div>
+                        <div class="middlePart">
+                            <p>175 x 200</p>
+                            <p>175 x 150</p>
+                            <p>110 x 56</p>
+                            <p>55 x 120</p>
+                        </div>
+                        <div class="rightPart">
+                            <p>5,17,500/-</p>
+                            <p>17,500/-</p>
+                            <p>5,600/-</p>
+                            <p>4,500/-</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div> -->
+        </div>
+
+    </div>
+    <div class="totalReport">
+        <div class="TR_theatersCount">
+            <h3 id="TR_theatersCountNo">0</h3>
+            <p>Theaters</p>
+        </div>
+        <div class="TR_ticketsCount">
+            <h3 id="TR_ticketsSoldNo">0</h3>
+            <p>Tickets Sold</p>
+        </div>
+        <div class="TR_grossCount">
+            <h3 id="TR_grossCountNo">0</h3>
+            <p>Total Gross</p>
+        </div>
+    </div>
+    <div class="controlButtons">
+        <!-- <button>Clear</button> -->
+        <button onclick="clearReport()">Clear</button>
+        <button onclick="backtoScreen2_1()">Back</button>
+    </div>
+
+    <footer id="footer">
+        <h6>Designed and Developed by RT Web & Mobile Apps</h6>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        let screen1 = document.querySelector(".screen1");
+        let screen2 = document.querySelector(".screen2");
+        let screen3 = document.querySelector(".screen3");
+        let footer = document.querySelector("#footer");
+
+        let locationChanger = document.querySelector(".locationChanger");
+        let theatersListUL = document.querySelector("#theatersListUL");
+        let locationsUL = document.querySelector("#locationsUL");
+        let sectionsContainer = document.querySelector(".sectionsContainer");
+        let calc_btn = document.querySelector("#calc_btn");
+        let vr_Btn_S1 = document.querySelector("#vr_Btn_S1");
+
+        let theaterName = document.querySelector("#theaterName");
+        let locationInput = document.querySelector("#locationInput");
+        let locationName = document.querySelector("#locationName");
+
+
+        let sectionName1 = document.querySelector("#sectionName1");
+        let sectionName2 = document.querySelector("#sectionName2");
+        let sectionName3 = document.querySelector("#sectionName3");
+        let sectionName4 = document.querySelector("#sectionName4");
+
+        let priceInputS1 = document.querySelector("#priceInputS1");
+        let priceInputS2 = document.querySelector("#priceInputS2");
+        let priceInputS3 = document.querySelector("#priceInputS3");
+        let priceInputS4 = document.querySelector("#priceInputS4");
+
+        let ticketSoldInput1 = document.querySelector("#ticketSoldInput1");
+        let ticketSoldInput2 = document.querySelector("#ticketSoldInput2");
+        let ticketSoldInput3 = document.querySelector("#ticketSoldInput3");
+        let ticketSoldInput4 = document.querySelector("#ticketSoldInput4");
+
+        let section1 = document.querySelector("#section1");
+        let section2 = document.querySelector("#section2");
+        let section3 = document.querySelector("#section3");
+        let section4 = document.querySelector("#section4");
+
+        let opSectionName1 = document.querySelector("#opSectionName1");
+        let opSectionName2 = document.querySelector("#opSectionName2");
+        let opSectionName3 = document.querySelector("#opSectionName3");
+        let opSectionName4 = document.querySelector("#opSectionName4");
+
+        let sectionCalculation1 = document.querySelector("#sectionCalculation1");
+        let sectionCalculation2 = document.querySelector("#sectionCalculation2");
+        let sectionCalculation3 = document.querySelector("#sectionCalculation3");
+        let sectionCalculation4 = document.querySelector("#sectionCalculation4");
+
+        let opTheaterName = document.querySelector("#opTheaterName");
+        let totalTicketsSold = document.querySelector("#totalTicketsSold");
+        let totalGross = document.querySelector("#totalGross");
+
+        let alertBoxContainer = document.querySelector(".alertBoxContainer");
+        let alertHead = document.querySelector("#alertHead");
+        let alertMsg = document.querySelector("#alertMsg");
+        let green_btn = document.querySelector("#green-btn");
+        let red_btn = document.querySelector("#red-btn");
+
+
+        let itemContainer3 = document.querySelector("#itemContainer3");
+
+        let totalReport = document.querySelector(".totalReport");
+        let TR_theatersCountNo = document.querySelector("#TR_theatersCountNo");
+        let TR_ticketsSoldNo = document.querySelector("#TR_ticketsSoldNo");
+        let TR_grossCountNo = document.querySelector("#TR_grossCountNo");
+
+        let controlButtons = document.querySelector(".controlButtons");
+
+        let hyderabadTL = theatersListArrayHYDSS.concat(HYD_MPXTL);
+        let hyderabadTSL = theaterSectionsListHYDSS.concat(HYD_MPXSL);
+        let hyderabadTSC = sectionCapacityHYDSS.concat(HYD_MPXTSC);
+
+        let theatersListArray = hyderabadTL;
+        let theaterSectionsList = hyderabadTSL;
+        let sectionCapacity = hyderabadTSC;
+
+        let olc = 0;
+        let pos = 1;
+
+        let theaterSections;
+
+        let Section1FULL;
+        let Section2FULL;
+        let Section3FULL;
+        let Section4FULL;
+
+        let section1Gross;
+        let section2Gross;
+        let section3Gross;
+        let section4Gross;
+        let totalTicketsSoldNumber;
+        let totalGrossAmount;
+
+        let dr_SUB = []
+        let dr_SUB_OCC = []
+        let dr_SUB_GRS = []
+
+        let totalGrossCount_TR = 0;
+        let totalsoldTickets_TR = 0;
+        let totalTheaters_TR = 0;
+
+        let dr_Classes = []
+        let dr_occupancy = []
+        let dr_Gross = []
+
+        let reportTheaters = []
+        let reportTicketSold = []
+        let reportTheaterGross = []
+
+
+        function calculateGross() {
+            if (theaterName.value == "") {
+                screen1.style.display = "flex";
+                screen2.style.display = "none";
+            } else {
+                screen1.style.display = "none";
+                screen2.style.display = "flex";
+                opTheaterName.innerHTML = theaterName.value;
+
+                if (priceInputS1.value == "") {
+                    priceInputS1.value = 0;
+                } else {
+                    priceInputS1.value = priceInputS1.value;
+                }
+                if (priceInputS2.value == "") {
+                    priceInputS2.value = 0;
+                } else {
+                    priceInputS2.value = priceInputS2.value;
+                }
+                if (priceInputS3.value == "") {
+                    priceInputS3.value = 0;
+                } else {
+                    priceInputS3.value = priceInputS3.value;
+                }
+                if (priceInputS4.value == "") {
+                    priceInputS4.value = 0;
+                } else {
+                    priceInputS4.value = priceInputS4.value;
+                }
+
+                if (ticketSoldInput1.value == "") {
+                    ticketSoldInput1.value = 0;
+                } else {
+                    ticketSoldInput1.value = ticketSoldInput1.value;
+                }
+                if (ticketSoldInput2.value == "") {
+                    ticketSoldInput2.value = 0;
+                } else {
+                    ticketSoldInput2.value = ticketSoldInput2.value;
+                }
+                if (ticketSoldInput3.value == "") {
+                    ticketSoldInput3.value = 0;
+                } else {
+                    ticketSoldInput3.value = ticketSoldInput3.value;
+                }
+                if (ticketSoldInput4.value == "") {
+                    ticketSoldInput4.value = 0;
+                } else {
+                    ticketSoldInput4.value = ticketSoldInput4.value;
+                }
+
+                section1Gross = priceInputS1.value * ticketSoldInput1.value;
+                section2Gross = priceInputS2.value * ticketSoldInput2.value;
+                section3Gross = priceInputS3.value * ticketSoldInput3.value;
+                section4Gross = priceInputS4.value * ticketSoldInput4.value;
+
+                totalTicketsSoldNumber = parseInt(ticketSoldInput1.value) + parseInt(ticketSoldInput2.value) + parseInt(ticketSoldInput3.value) + parseInt(ticketSoldInput4.value);
+                totalGrossAmount = section1Gross + section2Gross + section3Gross + section4Gross;
+
+                section1Gross = formatNumberWithCommas(section1Gross);
+                section2Gross = formatNumberWithCommas(section2Gross);
+                section3Gross = formatNumberWithCommas(section3Gross);
+                section4Gross = formatNumberWithCommas(section4Gross);
+
+                sectionCalculation1.innerHTML = priceInputS1.value + " x " + ticketSoldInput1.value + " = " + section1Gross + "/-";
+                sectionCalculation2.innerHTML = priceInputS2.value + " x " + ticketSoldInput2.value + " = " + section2Gross + "/-";
+                sectionCalculation3.innerHTML = priceInputS3.value + " x " + ticketSoldInput3.value + " = " + section3Gross + "/-";
+                sectionCalculation4.innerHTML = priceInputS4.value + " x " + ticketSoldInput4.value + " = " + section4Gross + "/-";
+
+
+                totalGrossAmount = formatNumberWithCommas(totalGrossAmount);
+
+                totalGrossAmount = totalGrossAmount + "/-";
+
+                totalTicketsSoldNumber = formatNumberWithCommas(totalTicketsSoldNumber);
+
+
+                totalTicketsSold.innerHTML = "Total Tickets Sold : " + totalTicketsSoldNumber;
+                totalGross.innerHTML = "Total Gross : " + totalGrossAmount;
+
+            }
+        }
+
+        function formatNumberWithCommas(number) {
+            // Convert the number to a string
+            var numberString = number.toString();
+
+            // Split the string into integer and decimal parts (if any)
+            var parts = numberString.split('.');
+            var integerPart = parts[0];
+            var decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+
+            // Add commas to the integer part
+            var formattedInteger;
+            var formattedNumber;
+
+            if (integerPart.length <= 3) {
+                formattedInteger = integerPart;
+            } else if (integerPart.length == 4) {
+                formattedInteger = integerPart[0] + "," + integerPart[1] + integerPart[2] + integerPart[3];
+            } else if (integerPart.length == 5) {
+                formattedInteger = integerPart[0] + integerPart[1] + "," + integerPart[2] + integerPart[3] + integerPart[4];
+            } else if (integerPart.length == 6) {
+                formattedInteger = integerPart[0] + "," + integerPart[1] + integerPart[2] + "," + integerPart[3] + integerPart[4] + integerPart[5];
+            } else if (integerPart.length == 7) {
+                formattedInteger = integerPart[0] + integerPart[1] + "," + integerPart[2] + integerPart[3] + "," + integerPart[4] + integerPart[5] + integerPart[6];
+            } else if (integerPart.length == 8) {
+                formattedInteger = integerPart[0] + "," + integerPart[1] + integerPart[2] + "," + integerPart[3] + integerPart[4] + "," + integerPart[5] + integerPart[6] + integerPart[7];
+            } else if (integerPart.length == 9) {
+                formattedInteger = integerPart[0] + integerPart[1] + "," + integerPart[2] + integerPart[3] + "," + integerPart[4] + integerPart[5] + "," + integerPart[6] + integerPart[7] + integerPart[8];
+            } else if (integerPart.length == 10) {
+                formattedInteger = integerPart[0] + "," + integerPart[1] + integerPart[2] + "," + integerPart[3] + integerPart[4] + "," + integerPart[5] + integerPart[6] + "," + integerPart[7] + integerPart[8] + integerPart[9];
+            }
+
+            // Concatenate the formatted integer and the decimal part
+
+            formattedNumber = formattedInteger + decimalPart;
+
+            return formattedNumber;
+        }
+
+        function goBack() {
+            screen1.style.display = "flex";
+            screen2.style.display = "none";
+            if (reportTheaters.length != 0) {
+                vr_Btn_S1.style.display = "block";
+            } else if (reportTheaters.length == 0) {
+                vr_Btn_S1.style.display = "none";
+            } else {
+                alert("Error Occured");
+            }
+        }
+
+
+        function sectionManipulate() {
+            let theaterIndex = theatersListArray.indexOf(theaterName.value);
+            theaterSections = theaterSectionsList[theaterIndex].split("%");
+
+            sectionFulls = sectionCapacity[theaterIndex].split("+");
+
+            Section1FULL = sectionFulls[0];
+            Section2FULL = sectionFulls[1];
+            Section3FULL = sectionFulls[2];
+            Section4FULL = sectionFulls[3];
+
+            priceInputS1.value = "";
+            priceInputS2.value = "";
+            priceInputS3.value = "";
+            priceInputS4.value = "";
+
+            ticketSoldInput1.value = "";
+            ticketSoldInput2.value = "";
+            ticketSoldInput3.value = "";
+            ticketSoldInput4.value = "";
+
+            sectionName1.innerHTML = theaterSections[0];
+            sectionName2.innerHTML = theaterSections[1];
+            sectionName3.innerHTML = theaterSections[2];
+            sectionName4.innerHTML = theaterSections[3];
+
+            opSectionName1.innerHTML = theaterSections[0];
+            opSectionName2.innerHTML = theaterSections[1];
+            opSectionName3.innerHTML = theaterSections[2];
+            opSectionName4.innerHTML = theaterSections[3];
+
+
+            if (sectionName1.innerHTML == "none") {
+                section1.style.display = "none";
+                sectionName1.style.display = "none";
+
+                opSectionName1.style.display = "none";
+                sectionCalculation1.style.display = "none";
+            } else {
+                section1.style.display = "flex";
+                sectionName1.style.display = "block";
+
+                opSectionName1.style.display = "block";
+                sectionCalculation1.style.display = "block";
+            }
+
+            if (sectionName2.innerHTML == "none") {
+                section2.style.display = "none";
+                sectionName2.style.display = "none";
+
+                opSectionName2.style.display = "none";
+                sectionCalculation2.style.display = "none";
+            } else {
+                section2.style.display = "flex";
+                sectionName2.style.display = "block";
+
+                opSectionName2.style.display = "block";
+                sectionCalculation2.style.display = "block";
+            }
+
+            if (sectionName3.innerHTML == "none") {
+                section3.style.display = "none";
+                sectionName3.style.display = "none";
+
+                opSectionName3.style.display = "none";
+                sectionCalculation3.style.display = "none";
+            } else {
+                section3.style.display = "flex";
+                sectionName3.style.display = "block";
+
+                opSectionName3.style.display = "block";
+                sectionCalculation3.style.display = "block";
+            }
+
+            if (sectionName4.innerHTML == "none") {
+                section4.style.display = "none";
+                sectionName4.style.display = "none";
+
+                opSectionName4.style.display = "none";
+                sectionCalculation4.style.display = "none";
+            } else {
+                section4.style.display = "flex";
+                sectionName4.style.display = "block";
+
+                opSectionName4.style.display = "block";
+                sectionCalculation4.style.display = "block";
+            }
+
+            sectionsContainer.style.display = "flex";
+            calc_btn.style.display = "block";
+            if (reportTheaters.length == 0) {
+                vr_Btn_S1.style.display = "none";
+            } else if (reportTheaters.length != 0) {
+                vr_Btn_S1.style.display = "block";
+            } else {
+                alert("An Error Occurred")
+            }
+
+        }
+
+        function setFullS1() {
+            ticketSoldInput1.value = Section1FULL;
+        }
+
+        function setFullS2() {
+            ticketSoldInput2.value = Section2FULL;
+        }
+
+        function setFullS3() {
+            ticketSoldInput3.value = Section3FULL;
+        }
+
+        function setFullS4() {
+            ticketSoldInput4.value = Section4FULL;
+        }
+
+        function changeLocation() {
+            const filterValue = locationInput.value.toUpperCase();
+            const filteredArray = locationsList.filter(item => item.toUpperCase().includes(filterValue));
+            displayLocationList(filteredArray);
+        }
+
+        function displayLocationList(filteredArray) {
+
+            locationsUL.innerHTML = "";
+
+
+            filteredArray.forEach(item => {
+                const listItem = document.createElement("li");
+                listItem.textContent = item;
+                listItem.setAttribute("onclick", "selectLocation(this.innerHTML)");
+                locationsUL.appendChild(listItem);
+            });
+
+
+        }
+
+        function openLocationChanger() {
+            if (olc == 0) {
+                locationInput.value = "";
+                locationChanger.style.display = "flex";
+                changeLocation();
+                olc = 1;
+            } else if (olc == 1) {
+                locationInput.value = "";
+                locationChanger.style.display = "none";
+                changeLocation();
+                olc = 0;
+            } else {
+                alert(olc)
+            }
+        }
+
+        function selectLocation(location) {
+
+            if (location == "HYDERABAD") {
+                setTheaterListArrays(hyderabadTL, hyderabadTSL, hyderabadTSC, location);
+            } else if (location == "VISAKHAPATNAM (VIZAG)") {
+                setTheaterListArrays(vizagTL, vizagTSL, vizagTSC, location);
+            } else if (location == "TIRUPATI") {
+                setTheaterListArrays(tirupathiTL, tirupathiTSL, tirupathiTSC, location);
+            } else if (location == "AHMEDABAD") {
+                setTheaterListArrays(ahmedabadTL, ahmedabadTSL, ahmedabadTSC, location);
+            } else if (location == "BANGALORE") {
+                setTheaterListArrays(bangloreTL, bangloreTSL, bangloreTSC, location);
+            } else if (location == "VIJAYAWADA") {
+                setTheaterListArrays(vijayawadaTL, vijayawadaTSL, vijayawadaTSC, location);
+            } else if (location == "CHENNAI") {
+                setTheaterListArrays(chennaiTL, chennaiTSL, chennaiTSC, location);
+            }
+            else {
+                openAlertBox("OOPS!", "We are currently working on that location and we will get back to you soon. Kindly Update your app and try again.", "Check for Update", "Close");
+            }
+
+            locationChanger.style.display = "none";
+            sectionsContainer.style.display = "none";
+            calc_btn.style.display = "none";
+            theaterName.value = "";
+            olc = 0;
+        }
+
+        function setTheaterListArrays(theaters, Sections, Capacity, location) {
+            theatersListArray = theaters;
+            theaterSectionsList = Sections;
+            sectionCapacity = Capacity;
+            locationName.innerHTML = location;
+        }
+
+        function selectTheater(theater) {
+            theaterName.value = theater;
+            theatersListUL.style.display = "none";
+            sectionManipulate();
+        }
+
+        function theatersSearchFilter() {
+            const filterValue = theaterName.value.toUpperCase();
+            const filteredArray = theatersListArray.filter(item => item.toUpperCase().includes(filterValue));
+            displayList(filteredArray);
+        }
+
+        function displayList(filteredArray) {
+
+            theatersListUL.style.display = "flex";
+
+            theatersListUL.innerHTML = "";
+
+
+            filteredArray.forEach(item => {
+                const listItem = document.createElement("li");
+                listItem.textContent = item;
+                listItem.setAttribute("onclick", "selectTheater(this.innerHTML)");
+                theatersListUL.appendChild(listItem);
+            });
+        }
+
+        function openAlertBox(head, msg, greenBtn, redBtn) {
+            alertBoxContainer.style.display = "flex";
+            alertHead.innerHTML = head;
+            alertMsg.innerHTML = msg;
+            green_btn.innerHTML = greenBtn;
+            red_btn.innerHTML = redBtn;
+
+            if (greenBtn == "0") {
+                green_btn.style.display = "none";
+            } else {
+                green_btn.style.display = "block";
+            }
+            if (redBtn == "0") {
+                red_btn.style.display = "none";
+            } else {
+                red_btn.style.display = "block";
+            }
+        }
+
+        function closeAlertBox() {
+            alertBoxContainer.style.display = "none";
+        }
+
+        function gotoUpdatePage() {
+            window.location.href = "https://itsram175.github.io/Theater_Gross_Calculator/updatePage.html";
+        }
+
+        function displayReport(reportTheaters, reportTheaterGross, reportTicketSold) {
+
+            let Screen3Content = document.createElement("div");
+            Screen3Content.classList.add("Screen3Content");
+            Screen3Content.setAttribute("id", "Screen3Content");
+
+            for (let i = 0; i < reportTheaters.length; i++) {
+
+                let listItemOuter3 = document.createElement("div");
+                listItemOuter3.classList.add("listItemOuter3");
+                let cancelIconContainer = document.createElement("div");
+                cancelIconContainer.classList.add("cancelIconContainer");
+                let cancleIcon = document.createElement("img");
+                cancleIcon.setAttribute("src", "https://itsram175.github.io/Theater_Gross_Calculator/cancel_Icon.png");
+                cancleIcon.classList.add("cancleIcon");
+                cancleIcon.setAttribute("onclick", "removeTheaterFromList(this.parentNode.parentNode)");
+                cancelIconContainer.appendChild(cancleIcon);
+
+                listItemOuter3.appendChild(cancelIconContainer);
+
+                let itemContainer3 = document.createElement("div");
+                itemContainer3.classList.add("itemContainer3");
+                itemContainer3.setAttribute("style", "height:60px;");
+
+                let listHeadPart = document.createElement("div");
+                listHeadPart.classList.add("listHeadPart");
+                let theaterNameHeading3 = document.createElement("h3");
+                theaterNameHeading3.classList.add("theaterNameHeading3");
+                theaterNameHeading3.innerText = reportTheaters[i];
+                let theaterGross3 = document.createElement("h3");
+                theaterGross3.classList.add("theaterGross3");
+                theaterGross3.innerText = reportTheaterGross[i];
+                listHeadPart.appendChild(theaterNameHeading3);
+                listHeadPart.appendChild(theaterGross3);
+
+                let middlePartArrow = document.createElement("div");
+                middlePartArrow.classList.add("middlePartArrow");
+                let soldTickets3 = document.createElement("p");
+                soldTickets3.classList.add("soldTickets3");
+                soldTickets3.innerText = reportTicketSold[i] + " Tickets Sold";
+
+                let downArrow = document.createElement("img");
+                downArrow.setAttribute("src", "https://itsram175.github.io/Theater_Gross_Calculator/down_Arrow.png");
+                downArrow.classList.add("downArrow");
+                downArrow.setAttribute("id", "downArrow")
+                downArrow.setAttribute("onclick", "expandList(this.parentNode.parentNode)");
+
+                middlePartArrow.appendChild(soldTickets3);
+                middlePartArrow.appendChild(downArrow);
+
+                itemContainer3.appendChild(listHeadPart);
+                itemContainer3.appendChild(middlePartArrow);
+
+                let detailedInfo = document.createElement("div");
+                detailedInfo.classList.add("detailedInfo");
+
+                let leftPart = document.createElement("div");
+                leftPart.classList.add("leftPart");
+                let middlePart = document.createElement("div");
+                middlePart.classList.add("middlePart");
+                let rightPart = document.createElement("div");
+                rightPart.classList.add("rightPart");
+
+                dr_SUB = dr_Classes[i].split("%");
+                dr_SUB_OCC = dr_occupancy[i].split("%");
+                dr_SUB_GRS = dr_Gross[i].split("%");
+
+
+                for (let k = 0; k < dr_SUB.length; k++) {
+
+                    let p1 = document.createElement("p");
+                    p1.classList.add("p1");
+                    p1.innerText = dr_SUB[k];
+                    leftPart.appendChild(p1);
+
+                    let p2 = document.createElement("p");
+                    p2.classList.add("p2");
+                    p2.innerText = dr_SUB_OCC[k];
+                    middlePart.appendChild(p2);
+
+                    let p3 = document.createElement("p");
+                    p3.classList.add("p3");
+                    p3.innerText = dr_SUB_GRS[k];
+                    rightPart.appendChild(p3);
+
+                    if (p1.innerText == "none" && p2.innerText == "0 x 0 " && p3.innerText == " 0/-") {
+                        p1.style.display = "none";
+                        p2.style.display = "none";
+                        p3.style.display = "none";
+                    } else {
+                        p1.style.display = "block";
+                        p2.style.display = "block";
+                        p3.style.display = "block";
+                    }
+                }
+
+
+                detailedInfo.appendChild(leftPart);
+                detailedInfo.appendChild(middlePart);
+                detailedInfo.appendChild(rightPart);
+                itemContainer3.appendChild(detailedInfo);
+                listItemOuter3.appendChild(itemContainer3);
+                Screen3Content.appendChild(listItemOuter3);
+
+            }
+            screen3.appendChild(Screen3Content);
+            calculatorTotalFactors()
+
+        }
+
+
+
+        function expandList(ref) {
+
+
+            // console.log(ref.innerHTML.toString().split("<p>"))
+
+            // console.log(ref.children[2].children[0].children.length);
+
+            // ref.style.height = "200px";
+
+            // console.log(ref.children[1].children[1])
+
+            let detailedInfoLengthREF = ref.children[2].children[0].children;
+            let detailedInfoLength = 0;
+
+            for (let l = 0; l < detailedInfoLengthREF.length; l++) {
+                if (detailedInfoLengthREF[l].innerHTML != "none") {
+                    detailedInfoLength++;
+                } else {
+                    detailedInfoLength = detailedInfoLength;
+                }
+            }
+
+            // console.log(detailedInfoLength);
+
+            if (ref.style.height == "60px") {
+                if (detailedInfoLength == 1) {
+                    ref.style.height = "85px";
+                } else if (detailedInfoLength == 2) {
+                    ref.style.height = "115px";
+                } else if (detailedInfoLength == 3) {
+                    ref.style.height = "145px";
+                } else if (detailedInfoLength == 4) {
+                    ref.style.height = "170px";
+                } else {
+                    alert("Error Occurred");
+                }
+                ref.children[1].children[1].style.transform = "rotate(180deg)";
+            } else if (ref.style.height == "85px" || ref.style.height == "115px" || ref.style.height == "145px" || ref.style.height == "170px") {
+                ref.style.height = "60px";
+                ref.children[1].children[1].style.transform = "rotate(0deg)";
+            }
+
+            // 85 115 145 170 
+
+            // console.log(ref.children[2].children[0].children)
+
+        }
+
+        function removeTheaterFromList(ref) {
+            // console.log(ref.children[1].children[0].children[0].innerHTML);
+            let theaterNameInList = ref.children[1].children[0].children[0].innerHTML;
+            let grossInList = ref.children[1].children[0].children[1].innerHTML;
+            let ticketsInList = ref.children[1].children[1].children[0].innerHTML.split(" ")[0];
+
+            // let section1InListRef = ref.children[1].children[2].children[0].children;
+            let section1InList = sectionsFinder(ref, 0);
+            let section2InList = sectionsFinder(ref, 1);
+            let section3InList = sectionsFinder(ref, 2);
+
+            grossInList = parseInt(grossInList);
+            ticketsInList = parseInt(ticketsInList);
+
+            reportTheaters.splice(reportTheaters.indexOf(theaterNameInList), 1);
+            reportTheaterGross.splice(reportTheaterGross.indexOf(grossInList), 1);
+            reportTicketSold.splice(reportTicketSold.indexOf(ticketsInList), 1);
+
+            // console.log(section1InList)
+            // console.log(dr_Classes[1]);
+            // console.log(section1InList == dr_Classes[1])
+            // console.log(dr_Classes.indexOf(section1InList));
+
+            dr_Classes.splice(dr_Classes.indexOf(section1InList), 1);
+            dr_occupancy.splice(dr_occupancy.indexOf(section2InList), 1);
+            dr_Gross.splice(dr_Gross.indexOf(section3InList), 1);
+
+            // console.log(section1InList);
+            // console.log(dr_Classes[1]);
+            // console.log(dr_Classes.indexOf(section1InList));
+
+
+            let Screen3Content = document.getElementById("Screen3Content");
+            Screen3Content.remove();
+
+            displayReport(reportTheaters, reportTheaterGross, reportTicketSold);
+        }
+
+        function calculatorTotalFactors() {
+            totalTheaters_TR = 0;
+            totalsoldTickets_TR = 0;
+            totalGrossCount_TR = 0;
+            for (let i = 0; i < reportTicketSold.length; i++) {
+                totalsoldTickets_TR += reportTicketSold[i];
+                totalGrossCount_TR += reportTheaterGross[i];
+            }
+            totalTheaters_TR = reportTheaterGross.length;
+
+            let formattedTheaterCount = formatNumberWithCommas(totalTheaters_TR);
+            let formattedTicketsSold = formatNumberWithCommas(totalsoldTickets_TR);
+            let formattedTotalGross = formatNumberWithCommas(totalGrossCount_TR);
+
+            TR_theatersCountNo.innerHTML = formattedTheaterCount;
+            TR_ticketsSoldNo.innerHTML = formattedTicketsSold;
+            TR_grossCountNo.innerHTML = formattedTotalGross;
+        }
+
+        function sectionsFinder(ref, count) {
+            let sectionInListCode;
+            let Sections = ref.children[1].children[2].children[0].children;
+            if (Sections.length == 4) {
+                sectionInListCode = ref.children[1].children[2].children[count].children[0].innerHTML + "%" + ref.children[1].children[2].children[count].children[1].innerHTML + "%" + ref.children[1].children[2].children[count].children[2].innerHTML + "%" + ref.children[1].children[2].children[count].children[3].innerHTML;
+            } else if (Sections.length == 3) {
+                sectionInListCode = ref.children[1].children[2].children[count].children[0].innerHTML + "%" + ref.children[1].children[2].children[count].children[1].innerHTML + "%" + ref.children[1].children[2].children[count].children[2].innerHTML;
+            } else if (Sections.length == 2) {
+                sectionInListCode = ref.children[1].children[2].children[count].children[0].innerHTML + "%" + ref.children[1].children[2].children[count].children[1].innerHTML
+            } else if (Sections.length == 1) {
+                sectionInListCode = ref.children[1].children[2].children[count].children[0].innerHTML
+            } else {
+                alert("Error Occured");
+            }
+
+            return sectionInListCode;
+        }
+
+        function backtoScreen2_1() {
+            screen3.style.display = "none";
+            totalReport.style.display = "none";
+            controlButtons.style.display = "none";
+            footer.style.display = "block";
+            if (pos == 1) {
+                screen1.style.display = "flex";
+                screen2.style.display = "none";
+            } else if (pos == 2) {
+                screen2.style.display = "flex";
+                screen1.style.display = "none";
+            }
+        }
+
+        function addInfoToList() {
+
+            let reference = document.querySelector(".opSectionContainer");
+            let classes;
+            let occupancy;
+            let gross;
+
+            let ticketsSoldPUSH;
+            let totalGrossPUSH;
+
+            // console.log(reference);
+            if (reference.children.length == 8) {
+                classes = opSectionName1.innerHTML + "%" + opSectionName2.innerHTML + "%" + opSectionName3.innerHTML + "%" + opSectionName4.innerHTML;
+
+                occupancy = sectionCalculation1.innerHTML.split("=")[0] + "%" + sectionCalculation2.innerHTML.split("=")[0] + "%" + sectionCalculation3.innerHTML.split("=")[0] + "%" + sectionCalculation4.innerHTML.split("=")[0];
+
+                gross = sectionCalculation1.innerHTML.split("=")[1] + "%" + sectionCalculation2.innerHTML.split("=")[1] + "%" + sectionCalculation3.innerHTML.split("=")[1] + "%" + sectionCalculation4.innerHTML.split("=")[1];
+
+                ticketsSoldPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation3.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation4.innerHTML.split("=")[0].split("x")[1]);
+
+                totalGrossPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation3.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation3.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation4.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation4.innerHTML.split("=")[0].split("x")[1]);
+
+                // console.log();
+
+            } else if (reference.children.length == 6) {
+                classes = opSectionName1.innerHTML + "%" + opSectionName2.innerHTML + "%" + opSectionName3.innerHTML;
+
+                occupancy = sectionCalculation1.innerHTML.split("=")[0] + "%" + sectionCalculation2.innerHTML.split("=")[0] + "%" + sectionCalculation3.innerHTML.split("=")[0];
+
+                gross = sectionCalculation1.innerHTML.split("=")[1] + "%" + sectionCalculation2.innerHTML.split("=")[1] + "%" + sectionCalculation3.innerHTML.split("=")[1];
+
+                ticketsSoldPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation3.innerHTML.split("=")[0].split("x")[1]);
+
+                totalGrossPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation3.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation3.innerHTML.split("=")[0].split("x")[1]);
+
+            } else if (reference.children.length == 4) {
+                classes = opSectionName1.innerHTML + "%" + opSectionName2.innerHTML;
+
+                occupancy = sectionCalculation1.innerHTML.split("=")[0] + "%" + sectionCalculation2.innerHTML.split("=")[0];
+
+                gross = sectionCalculation1.innerHTML.split("=")[1] + "%" + sectionCalculation2.innerHTML.split("=")[1];
+
+                ticketsSoldPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[1]);
+
+                totalGrossPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]) + parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation2.innerHTML.split("=")[0].split("x")[1]);
+
+            } else if (reference.children.length == 2) {
+                classes = opSectionName1.innerHTML;
+
+                occupancy = sectionCalculation1.innerHTML.split("=")[0];
+
+                gross = sectionCalculation1.innerHTML.split("=")[1];
+
+                ticketsSoldPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]);
+
+                totalGrossPUSH = parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[0]) * parseInt(sectionCalculation1.innerHTML.split("=")[0].split("x")[1]);
+            }
+            // console.log(classes,occupancy,gross);
+            // console.log(totalGrossPUSH)
+
+            reportTheaters.push(opTheaterName.innerHTML);
+            reportTicketSold.push(ticketsSoldPUSH);
+            reportTheaterGross.push(totalGrossPUSH);
+
+            dr_Classes.push(classes);
+            dr_occupancy.push(occupancy);
+            dr_Gross.push(gross);
+
+            // console.log(gross);
+
+
+        }
+
+        function viewReport(posRef) {
+            screen2.style.display = "none";
+            screen1.style.display = "none";
+            footer.style.display = "none";
+            screen3.style.display = "flex";
+            totalReport.style.display = "flex";
+            controlButtons.style.display = "flex";
+            let Screen3Content = document.getElementById("Screen3Content");
+            Screen3Content.remove();
+            displayReport(reportTheaters, reportTheaterGross, reportTicketSold);
+            if (posRef == 2) {
+                pos = 2;
+            } else if (posRef == 1) {
+                pos = 1;
+            } else {
+                alert(posRef);
+            }
+        }
+
+        function clearReport() {
+            reportTheaters = []
+            reportTicketSold = []
+            reportTheaterGross = []
+
+            dr_SUB = []
+            dr_SUB_OCC = []
+            dr_SUB_GRS = []
+
+            dr_Classes = []
+            dr_occupancy = []
+            dr_Gross = []
+
+            let Screen3Content = document.getElementById("Screen3Content");
+            Screen3Content.remove();
+            displayReport(reportTheaters, reportTheaterGross, reportTicketSold);
+        }
+
+        displayReport(reportTheaters, reportTheaterGross, reportTicketSold);
+
+
+    </script>
+</body>
+
+</html>
